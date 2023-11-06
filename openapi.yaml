@@ -1,0 +1,1228 @@
+openapi: 3.0.3
+info:
+  title: Event Notification
+  version: 1.2.0
+  description: |-
+    ## Summary
+    Use this API to subscribe to event notifications such as 'submission created'.
+
+    Specify a webhook Url to automatically receive event notifications when events occur (PUSH).
+    Or alternatively use the endpoint GET /subscription/{subscriptionId}/events to PULL available events.
+
+    Available Event Types can be accessed through the Event Types Endpoints.
+
+    If you use a webhook url, make sure, that at least the TECHNICAL_PING event, needs to be processed, for every webhook.
+  contact:
+    name: Integration Excellence
+    url: https://atlas.interhyp.de/confluence/display/DP/%5BSquad%5D+Integration+Excellence
+    email: _DPT_Squad_PartnerIntegration@interhyp.de
+externalDocs:
+  description: Technical description for error handling
+  url: https://developer.ehyphome.de/local-apis/errorHandling.pdf
+servers:
+- url: https://event-notification-service.ehyp.prod.interhyp-cloud.de
+  description: Production
+- url: https://event-notification-service.ehyp.dev.interhyp-cloud.de
+  description: Dev Stage
+security:
+- BearerAuth: []
+components:
+  securitySchemes:
+    BearerAuth:
+      $ref: '#/components/securitySchemes/StandardBearerAuth'
+    ApiKey:
+      $ref: '#/components/securitySchemes/StandardApiKey'
+    StandardApiKey:
+      type: apiKey
+      in: header
+      name: Api-Key
+      description: API keys are unique codes issued by an API provider that allow
+        partners to access specific API resources. By requiring an API key, the provider
+        can ensure that only authorized clients are accessing the API and can prevent
+        potential abuse or unauthorized access.
+    StandardBearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT stands for JSON Web Token and is a type of bearer token that
+        is commonly used for authentication and authorization purposes. Once retrieved,
+        the token is sent with each request and grants access to the associated resource
+        until it expires or is revoked. Thus, it is a compact, URL-safe means of representing
+        a user's claims to access a resource without providing additional credentials.
+  schemas:
+    Subscription:
+      description: Ressource that contains all data to manage an Event Subscription.
+      allOf:
+      - $ref: '#/components/schemas/SubscriptionId'
+      type: object
+      required:
+      - subscriptionName
+      - endPoint
+      properties:
+        companyId:
+          description: The id of the Company, for which the Subscription is applicable.
+          example: 209547353334
+          type: integer
+          format: int64
+          minimum: 1
+        loanPartnerId:
+          description: The id of the Loan partner, for which the Subscription is applicable.
+          example: '123312'
+          type: string
+          maxLength: 255
+        subscriptionName:
+          description: Human readable name of your given Subscription.
+          example: All Submission events
+          type: string
+          maxLength: 255
+        endPoint:
+          $ref: '#/components/schemas/EndPoint'
+        eventTypes:
+          type: array
+          description: "Array of event notification types to subscribe to. \nAn empty\
+            \ array means subscribe to all types.\n"
+          items:
+            $ref: '#/components/schemas/EventType'
+    SubscriptionId:
+      description: Primary Key of a Subscription.
+      properties:
+        subscriptionId:
+          description: Primary Key of a Subscription.
+          example: 34fdceac-19fe-422e-898d-86f597dbbff5
+          type: string
+          format: uuid
+          readOnly: true
+    EndPoint:
+      description: Endpoint to receive event notifications.
+      required:
+      - endPointType
+      discriminator:
+        propertyName: endPointType
+        mapping:
+          None: '#/components/schemas/None'
+          Webhook: '#/components/schemas/Webhook'
+      properties:
+        endPointType:
+          description: The specific endPointType, holding information, how you receive
+            your Events.
+          type: string
+          enum:
+          - None
+          - Webhook
+    None:
+      description: Don't use endpoint to receive event notifications.
+      allOf:
+      - $ref: '#/components/schemas/EndPoint'
+    Webhook:
+      description: Webhook endpoint to receive event notifications.
+      allOf:
+      - $ref: '#/components/schemas/EndPoint'
+      required:
+      - webhookUrl
+      - eventDispatchIntervalInSeconds
+      - eventDispatchCount
+      properties:
+        webhookUrl:
+          type: string
+          pattern: ^https:\/\/.+
+          description: Webhook Url to receive event notifications.
+          example: https://github.com
+        eventDispatchIntervalInSeconds:
+          type: integer
+          format: int64
+          minimum: 1
+          maximum: 60
+          description: Minimum Interval (seconds) between event dispatches.
+        eventDispatchCount:
+          type: integer
+          format: int64
+          minimum: 1
+          maximum: 100
+          description: Maximum number of Events per batch.
+    Events:
+      description: Events
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/EventsWithoutPaging'
+      required:
+      - paging
+      properties:
+        paging:
+          $ref: '#/components/schemas/PageableResultInfo'
+    EventsWithoutPaging:
+      description: Events
+      required:
+      - data
+      properties:
+        data:
+          type: array
+          description: Array of event notifications.
+          items:
+            $ref: '#/components/schemas/Event'
+    Event:
+      type: object
+      description: Basic data of a specific Event.
+      allOf:
+      - $ref: '#/components/schemas/SubscriptionId'
+      required:
+      - eventType
+      - eventId
+      - eventStatus
+      properties:
+        eventId:
+          description: Event id
+          example: 91fba95d-c3c9-4a67-a5d4-fd0b0d4870f4
+          type: string
+          format: uuid
+        eventStatus:
+          $ref: '#/components/schemas/EventStatusString'
+        entityId:
+          description: Domain object id. For example submissionId.
+          example: '213123'
+          type: string
+        entityAt:
+          description: Original occurrence of the Event. For example, when the submission
+            was created.
+          type: string
+          format: date-time
+        eventType:
+          $ref: '#/components/schemas/EventTypeSingle'
+    EventStatusString:
+      description: |
+        Filter for event status:
+          * `OPEN` - Event not processed yet.
+          * `RETRY` - Event processed incorrectly. Retry is performed at the next dispatch interval. Maximum number of retries is 3.
+          * `ERROR` - Event processed incorrectly three times. No retry is performed until the status is reset to `OPEN`.
+          * `CLOSED` - Event was dispatched successfully.
+      type: string
+      x-extensible-enum:
+      - OPEN
+      - RETRY
+      - ERROR
+      - CLOSED
+    Subscriptions:
+      description: List of several Subscription ressources.
+      type: object
+      required:
+      - data
+      - paging
+      properties:
+        data:
+          type: array
+          description: Array containing response data.
+          items:
+            $ref: '#/components/schemas/Subscription'
+        paging:
+          $ref: '#/components/schemas/PageableResultInfo'
+    CallbackEvents:
+      description: Resource to acknowledge a specific Event.
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/EventsWithoutPaging'
+      - $ref: '#/components/schemas/Callback'
+    Callback:
+      description: Resource to acknowledge a specific Event.
+      type: object
+      required:
+      - callbackToken
+      properties:
+        callbackToken:
+          description: The token for the callback request. This token must be returned
+            in the callback response to acknowledge that events were received.
+          example: 40ce25c2-8148-4b69-9395-c7dc2e62c692
+          type: string
+          format: uuid
+    RFC7807Problem:
+      description: Detailed information on the error.
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          description: Error time as UTC date-time.
+        type:
+          type: string
+          format: uri
+          description: Further information on the error.
+          default: about:blank
+        title:
+          type: string
+          description: Error message.
+          example: Bad Request
+        status:
+          type: integer
+          format: int32
+          description: HTTP status code based on the following error codes (https://tools.ietf.org/html/rfc2616#section-10).
+          example: 400
+          minimum: 100
+          maximum: 600
+          exclusiveMaximum: true
+        detail:
+          type: string
+          description: Further description of the error pattern.
+          example: JSON parse error
+        traceId:
+          type: string
+          description: The Trace id of the request.
+          example: avx1234asd
+        instance:
+          type: string
+          format: uri
+          description: The path which was called.
+        violations:
+          type: array
+          description: Optional list of fields with incorrect content.
+          items:
+            $ref: '#/components/schemas/Violation'
+    Violation:
+      description: Description of a faulty field value.
+      properties:
+        field:
+          type: string
+          description: Name of the field.
+          example: Subscription.companyId
+        message:
+          type: string
+          description: Error description.
+          example: must be greater than or equal to 1
+    OAuthProblem:
+      description: Error during authentication
+      properties:
+        error:
+          type: string
+          description: Error message
+          example: invalid_token
+        error_description:
+          type: string
+          description: Further description of the error pattern.
+          example: Access token expired
+    EventCategoryDescription:
+      description: Event type specific category with description
+      properties:
+        category:
+          description: Event type specific category.
+          type: string
+        description:
+          description: Description of an Event type specific category.
+          type: string
+      required:
+      - category
+      - description
+    EventCategoryDescriptions:
+      description: List of Event type specific category with descriptions
+      type: object
+      required:
+      - data
+      properties:
+        data:
+          type: array
+          description: Array containing response data.
+          items:
+            $ref: '#/components/schemas/EventCategoryDescription'
+    EventNameDescription:
+      description: Event type specific category and names with descriptions
+      properties:
+        name:
+          description: Event type specific name.
+          type: string
+        description:
+          description: Description of an Event type specific name.
+          type: string
+      required:
+      - name
+      - description
+    EventNameDescriptions:
+      description: List of Event type specific names with descriptions
+      type: object
+      required:
+      - data
+      properties:
+        data:
+          type: array
+          description: Array containing response data.
+          items:
+            $ref: '#/components/schemas/EventNameDescription'
+    EventType:
+      description: Event type specific category and names.
+      properties:
+        category:
+          description: Event type specific category.
+          type: string
+        names:
+          description: |
+            General Event type specific names.
+          type: array
+          items:
+            type: string
+    EventTypeSingle:
+      description: Event type specific category and name.
+      required:
+      - category
+      - name
+      properties:
+        category:
+          description: Event type specific category.
+          type: string
+        name:
+          description: |
+            General Event type specific name.
+          type: string
+    Cursor:
+      type: object
+      description: |
+        A cursor refers to a random string of characters which marks a specific item in a collection of data.
+
+        The cursor will always point to the item, however it will be invalidated if the item is deleted or removed.
+      properties:
+        before:
+          type: string
+          description: |
+            This is the cursor that points to the start of the page of data that has been returned.
+        after:
+          type: string
+          description: |
+            This is the cursor that points to the end of the page of data that has been returned.
+    PageableResultInfo:
+      type: object
+      description: |
+        Cursor-based pagination to improve performance and minimize networks traffic, Pagination is enforced for operations
+        that potentially could return a large collection of items.
+      properties:
+        cursor:
+          $ref: '#/components/schemas/Cursor'
+        previous:
+          type: string
+          format: uri
+          description: |
+            A Hyperlink that will return the previous page of data. If not included, this is the first page of data.
+        next:
+          type: string
+          format: uri
+          description: |
+            A Hyperlink that will return the next page of data. If not included, this is the last page of data.
+            > The Absence of *next* hyperlink indicates that a query reached the end of the available result.
+    JsonPatchOperation:
+      description: JSON Patch definition according to <a href='https://tools.ietf.org/html/rfc6902'>RFC
+        6902</a>.
+      required:
+      - op
+      - path
+      properties:
+        op:
+          $ref: '#/components/schemas/PatchOperation'
+        path:
+          type: string
+          description: JSON-Pointer value [<a href='https://tools.ietf.org/html/rfc6901'>RFC
+            6901</a>] that references a location within the target document (the "target
+            location") where the operation is performed.
+          example: /description
+        value:
+          type: string
+          description: New value to be set by the operation.
+          example: A new description
+    PatchOperation:
+      description: An operation is applied to the data structures represented by a
+        JSON document.
+      type: string
+      enum:
+      - replace
+    PatchOperationEvent:
+      description: All patchable data of an Event.
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/JsonPatchOperation'
+      required:
+      - eventId
+      properties:
+        eventId:
+          description: The unique id of the Event which should be patched.
+          example: 91fba95d-c3c9-4a67-a5d4-fd0b0d4870f4
+          type: string
+          format: uuid
+        path:
+          type: string
+          description: Patchable paths of an Event.
+          enum:
+          - /eventStatus
+    PatchOperationSubscription:
+      description: All patchable data of a subscription.
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/JsonPatchOperation'
+      properties:
+        path:
+          type: string
+          description: Patchable paths of a subscription.
+          enum:
+          - /subscriptionName
+          - /endPoint/endPointType
+          - /endPoint/webhookUrl
+          - /endPoint/eventDispatchIntervalInSeconds
+          - /endPoint/eventDispatchCount
+          - /eventTypes
+    Ping:
+      description: Ping Ressource to test a specific endpoint.
+      type: object
+      required:
+      - webhookUrl
+      properties:
+        companyId:
+          description: The id of the Company, for which the Ping should be performed.
+          example: 209547353334
+          type: integer
+          format: int64
+          minimum: 1
+        loanPartnerId:
+          description: The id of the Loan partner, for which the Ping should be performed.
+          example: '123312'
+          type: string
+          maxLength: 255
+        webhookUrl:
+          type: string
+          description: Webhook url for which the Ping should be performed.
+          example: https://server.com
+    ServiceInfo:
+      type: object
+      description: |
+        DE: Informationen zur API <br/> EN: provides information about the API
+      properties:
+        apiSpecificationVersion:
+          type: string
+          description: |
+            DE: Die aktuell verwendete Version der API Spezifikation <br/> EN: The currently used version of the API specification
+  parameters:
+    SubscriptionId:
+      name: subscriptionId
+      in: path
+      description: The unique id of the Subscription which should be managed.
+      required: true
+      schema:
+        type: string
+      example: 34fdceac-19fe-422e-898d-86f597dbbff5
+    EventTypeCategory:
+      name: typeCategory
+      in: path
+      description: The unique name of a specific Event Type Category.
+      required: true
+      schema:
+        type: string
+      example: SUBMISSION
+    Language:
+      name: language
+      in: query
+      description: Optional language (EN/DE). The default is EN.
+      schema:
+        type: string
+        pattern: ^[DE][EN]$
+      example: EN
+    CursorAfterQueryParameter:
+      name: after
+      in: query
+      description: Cursor that points to the end of the page of data that has been
+        returned.
+      required: false
+      schema:
+        type: string
+      example: c2ltcGxlLWN1cnNvcjM5
+    CursorBeforeQueryParameter:
+      name: before
+      in: query
+      description: Cursor that points to the start of the page of data that has been
+        returned.
+      required: false
+      schema:
+        type: string
+      example: c2ltcGxlLWN1cnNvcjIw
+    LimitQueryParameter:
+      name: limit
+      in: query
+      description: Specifies how many items to return at one time (max 50). <br> A
+        query may return fewer than the value of limit due to filtering.
+      required: false
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 50
+        default: 20
+      example: 30
+  responses:
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RFC7807Problem'
+          example:
+            timestamp: '2019-08-24T14:15:22Z'
+            type: about:blank
+            title: Forbidden
+            status: 403
+            detail: The requested resource is not accessable
+            traceId: avx1234asd
+            instance: http://example.com
+    InternalServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RFC7807Problem'
+          example:
+            timestamp: '2019-08-24T14:15:22Z'
+            type: about:blank
+            title: InternalServerError
+            status: 500
+            traceId: avx1234asd
+            instance: http://example.com
+    InvalidRequestParameters:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RFC7807Problem'
+          example:
+            timestamp: '2019-08-24T14:15:22Z'
+            type: about:blank
+            title: Bad Request
+            status: 400
+            detail: JSON parse error
+            traceId: avx1234asd
+            instance: http://example.com
+            violations:
+            - field: ExampleObject.propertyName
+              message: must be greater than or equal to 1
+    ResourceNotFound:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RFC7807Problem'
+          example:
+            timestamp: '2019-08-24T14:15:22Z'
+            type: about:blank
+            title: Not Found
+            status: 404
+            detail: The requested resource is not available
+            traceId: avx1234asd
+            instance: http://example.com
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthProblem'
+          example:
+            error: invalid_token
+            error_description: Access token expired
+tags:
+- name: Subscriptions
+  description: With a Subscription it's possible to configure which Events are suitable
+    for your company and how they should be dispatched.
+- name: Events
+  description: Events hold basic information about what happened in the application.
+    Based on the Events it's possible to get the specific data of the underlying resource.
+- name: Event Types
+  description: Event Types collect all information and further descriptions about
+    all available Event Type Categories and Event Type Names.
+- name: Internal
+  description: Tag to describe internal endpoints
+- name: Info
+  description: General information about the API and the connectivity
+paths:
+  /subscriptions:
+    post:
+      operationId: post-subscription
+      tags:
+      - Subscriptions
+      summary: Create a Subscription.
+      description: |-
+        Create a Subscription for company related event notifications.
+
+        A LoanPartnerId can be specified instead of a CompanyId. This is to support usecases, that currently work with LoanPartnerId.
+      requestBody:
+        description: Information about the desired Subscription.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Subscription'
+            example:
+              companyId: 2342343
+              subscriptionName: All my Submissions
+              endPoint:
+                endPointType: Webhook
+                webhookUrl: https://github.com
+                eventDispatchIntervalInSeconds: 10
+                eventDispatchCount: 100
+              eventTypes:
+              - category: GENERAL
+                names:
+                - TECHNICAL_PING
+              - category: SUBMISSION
+                names:
+                - SUBMISSION_CREATED
+      responses:
+        '201':
+          description: Added
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionId'
+              example:
+                subscriptionId: 34fdceac-19fe-422e-898d-86f597dbbff5
+        '400':
+          $ref: '#/components/responses/InvalidRequestParameters'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/ResourceNotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      callbacks:
+        EventNotification:
+          '{$request.body#/endPoint/webhookUrl}':
+            post:
+              operationId: post-new-event
+              tags:
+              - Events
+              summary: Endpoint to acknowledge a list of specific events.
+              requestBody:
+                required: true
+                content:
+                  application/json:
+                    schema:
+                      $ref: '#/components/schemas/CallbackEvents'
+                    example:
+                      data:
+                      - eventType:
+                          category: SUBMISSION
+                          name: SUBMISSION_CREATED
+                        eventId: 91fba95d-c3c9-4a67-a5d4-fd0b0d4870f4
+                        eventStatus: OPEN
+                        entityId: '213123'
+                        entityAt: 2021-07-21T17:32:28Z
+                        subscriptionId: 34fdceac-19fe-422e-898d-86f597dbbff5
+                      - eventType:
+                          category: SUBMISSION
+                          name: SUBMISSION_CREATED
+                        eventId: d852f0ed-6f61-4339-806a-7c010a0f8a9a
+                        eventStatus: OPEN
+                        entityId: '213001'
+                        entityAt: 2021-07-21T17:34:44Z
+                        subscriptionId: 34fdceac-19fe-422e-898d-86f597dbbff5
+                      callbackToken: 40ce25c2-8148-4b69-9395-c7dc2e62c692
+              responses:
+                '200':
+                  description: Your server returns this code if it accepts the callback.
+                  content:
+                    application/json:
+                      schema:
+                        $ref: '#/components/schemas/Callback'
+                default:
+                  description: |-
+                    Any of the following will lead to a retry of dispatching the Event, up to three times:
+                    * Your server does not respond within 3 seconds
+                    * Any other return code
+                    * No callbackToken or a callbackToken that does not match the one in the request was sent back in the response body.
+    get:
+      operationId: get-subscriptions
+      tags:
+      - Subscriptions
+      description: Returns a list of all Subscriptions or the Subscriptions that belong
+        to a company.
+      summary: Get Subscriptions.
+      parameters:
+      - name: companyId
+        in: query
+        description: The id of the Company, for which the Subscription is applicable.
+        example: 2342343
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+      - name: loanPartnerId
+        in: query
+        description: The id of the Loan partner, for which the Subscription is applicable.
+        example: '123312'
+        schema:
+          type: string
+          maxLength: 255
+      - $ref: '#/components/parameters/CursorBeforeQueryParameter'
+      - $ref: '#/components/parameters/CursorAfterQueryParameter'
+      - $ref: '#/components/parameters/LimitQueryParameter'
+      responses:
+        '200':
+          description: List of Subscriptions.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Subscriptions'
+              example:
+                data:
+                - companyId: 2342343
+                  loanPartnerId: '123312'
+                  subscriptionId: 34fdceac-19fe-422e-898d-86f597dbbff5
+                  subscriptionName: All my Submissions
+                  endPoint:
+                    endPointType: Webhook
+                    webhookUrl: https://github.com
+                    eventDispatchIntervalInSeconds: 10
+                    eventDispatchCount: 100
+                  eventTypes:
+                  - category: GENERAL
+                    names:
+                    - TECHNICAL_PING
+                  - category: SUBMISSION
+                    names:
+                    - SUBMISSION_CREATED
+                - companyId: 2342343
+                  loanPartnerId: '123312'
+                  subscriptionId: b2eb2c19-7dc9-4fa8-b8b7-a5424469dc18
+                  subscriptionName: Pull only
+                  endPoint:
+                    endPointType: None
+                  eventTypes:
+                  - category: GENERAL
+                    names:
+                    - TECHNICAL_PING
+                  - category: SUBMISSION
+                    names:
+                    - SUBMISSION_CREATED
+                paging:
+                  cursor:
+                    before: MjAyMi0wNi0yN1QxNToxNToyMy4zMzM
+                    after: MjAyMi0wNi0wMVQxNToxNToyMy41NzA
+                  previous: https://api.ehyphome.de/event-notification/v1/subscriptions/{subscriptionId}/events?before=MjAyMi0wNi0yN1QxNToxNToyMy4zMzM
+                  next: https://api.ehyphome.de/event-notification/v1/subscriptions?after=MjAyMi0wNi0wMVQxNToxNToyMy41NzA
+        '400':
+          $ref: '#/components/responses/InvalidRequestParameters'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/ResourceNotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /subscriptions/{subscriptionId}:
+    parameters:
+    - $ref: '#/components/parameters/SubscriptionId'
+    get:
+      operationId: get-subscription
+      tags:
+      - Subscriptions
+      description: Receive a specific Subscription.
+      summary: Get a Subscription.
+      responses:
+        '200':
+          description: Specific Subscription.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Subscription'
+              example:
+                companyId: 2342343
+                loanPartnerId: '123312'
+                subscriptionId: 34fdceac-19fe-422e-898d-86f597dbbff5
+                subscriptionName: All my Submissions
+                endPoint:
+                  endPointType: Webhook
+                  webhookUrl: https://github.com
+                  eventDispatchIntervalInSeconds: 10
+                  eventDispatchCount: 100
+                eventTypes:
+                - category: GENERAL
+                  names:
+                  - TECHNICAL_PING
+                - category: SUBMISSION
+                  names:
+                  - SUBMISSION_CREATED
+        '400':
+          $ref: '#/components/responses/InvalidRequestParameters'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/ResourceNotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    patch:
+      tags:
+      - Subscriptions
+      summary: Update a Subscription.
+      operationId: update-subscription
+      requestBody:
+        description: |-
+          The specification of the values to be updated for the Subscription.
+          See path for possible fields to be updated.
+
+          JSON Patch definition according to <a href='https://tools.ietf.org/html/rfc6902'>RFC6902</a>.
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/PatchOperationSubscription'
+            example:
+            - op: replace
+              path: /endPoint/endPointType
+              value: Webhook
+            - op: replace
+              path: /endPoint/webhookUrl
+              value: https://github.com
+            - op: replace
+              path: /endPoint/eventDispatchIntervalInSeconds
+              value: '10'
+            - op: replace
+              path: /endPoint/eventDispatchCount
+              value: '50'
+            - op: replace
+              path: /eventTypes
+              value: '[{"category": "SUBMISSION", "names": ["SUBMISSION_CREATED",
+                "SUBMISSION_CHANGED"]}, {"category": "GENERAL"}]'
+            - op: replace
+              path: /eventTypes
+              value: '[]'
+      responses:
+        '204':
+          description: Subscription successfully updated.
+        '400':
+          $ref: '#/components/responses/InvalidRequestParameters'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/ResourceNotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      operationId: delete-subscription
+      tags:
+      - Subscriptions
+      summary: Delete a Subscription.
+      responses:
+        '204':
+          description: Subscription successfully deleted.
+        '400':
+          $ref: '#/components/responses/InvalidRequestParameters'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/ResourceNotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /subscriptions/{subscriptionId}/events:
+    parameters:
+    - $ref: '#/components/parameters/SubscriptionId'
+    get:
+      operationId: get-events
+      tags:
+      - Events
+      parameters:
+      - name: status
+        description: |
+          Filter for event status:
+            * `OPEN` - Event not processed yet.
+            * `RETRY` - Event processed incorrectly. Retry is performed at the next dispatch interval. Maximum number of retries is 3.
+            * `ERROR` - Event processed incorrectly three times. No retry is performed until the status is reset to `OPEN`.
+            * `CLOSED` - Event was dispatched successfully.
+        in: query
+        required: false
+        example: OPEN
+        schema:
+          $ref: '#/components/schemas/EventStatusString'
+      - $ref: '#/components/parameters/CursorBeforeQueryParameter'
+      - $ref: '#/components/parameters/CursorAfterQueryParameter'
+      - $ref: '#/components/parameters/LimitQueryParameter'
+      description: Returns a list of open event notifications. Use this to pull event
+        notifications, if a callback Url was not provided.
+      summary: Get Event Notifications.
+      responses:
+        '200':
+          description: List of event notifications.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Events'
+              example:
+                data:
+                - eventType:
+                    category: SUBMISSION
+                    name: SUBMISSION_CREATED
+                  eventId: 91fba95d-c3c9-4a67-a5d4-fd0b0d4870f4
+                  eventStatus: OPEN
+                  entityId: '213123'
+                  entityAt: 2021-07-21T17:32:28Z
+                  subscriptionId: 34fdceac-19fe-422e-898d-86f597dbbff5
+                - eventType:
+                    category: SUBMISSION
+                    name: SUBMISSION_CREATED
+                  eventId: d852f0ed-6f61-4339-806a-7c010a0f8a9a
+                  eventStatus: OPEN
+                  entityId: '213001'
+                  entityAt: 2021-07-21T17:34:44Z
+                  subscriptionId: 34fdceac-19fe-422e-898d-86f597dbbff5
+                paging:
+                  cursor:
+                    before: MjAyMi0wNi0yN1QxNToxNToyMy4zMzM
+                    after: MjAyMi0wNi0wMVQxNToxNToyMy41NzA
+                  previous: https://api.ehyphome.de/event-notification/v1/subscriptions/{subscriptionId}/events?before=MjAyMi0wNi0yN1QxNToxNToyMy4zMzM
+                  next: https://api.ehyphome.de/event-notification/v1/subscriptions/{subscriptionId}/events?after=MjAyMi0wNi0wMVQxNToxNToyMy41NzA
+        '400':
+          $ref: '#/components/responses/InvalidRequestParameters'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/ResourceNotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    patch:
+      tags:
+      - Events
+      summary: Update Event Notifications.
+      operationId: update-events
+      requestBody:
+        description: |-
+          The specification of the values to be updated for the Events.
+          See path for possible fields to be updated.
+
+          JSON Patch definition according to <a href='https://tools.ietf.org/html/rfc6902'>RFC6902</a>.
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/PatchOperationEvent'
+            example:
+            - eventId: 91fba95d-c3c9-4a67-a5d4-fd0b0d4870f4
+              op: replace
+              path: /eventStatus
+              value: CLOSED
+            - eventId: d852f0ed-6f61-4339-806a-7c010a0f8a9a
+              op: replace
+              path: /eventStatus
+              value: CLOSED
+      responses:
+        '200':
+          description: List of successfully updated Event notifications.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventsWithoutPaging'
+              example:
+                data:
+                - eventType:
+                    category: SUBMISSION
+                    name: SUBMISSION_CREATED
+                  eventId: 91fba95d-c3c9-4a67-a5d4-fd0b0d4870f4
+                  eventStatus: CLOSED
+                  entityId: '213123'
+                  entityAt: 2021-07-21T17:32:28Z
+                  subscriptionId: 34fdceac-19fe-422e-898d-86f597dbbff5
+                - eventType:
+                    category: SUBMISSION
+                    name: SUBMISSION_CREATED
+                  eventId: d852f0ed-6f61-4339-806a-7c010a0f8a9a
+                  eventStatus: CLOSED
+                  entityId: '213001'
+                  entityAt: 2021-07-21T17:34:44Z
+                  subscriptionId: 34fdceac-19fe-422e-898d-86f597dbbff5
+        '400':
+          $ref: '#/components/responses/InvalidRequestParameters'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/ResourceNotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /ping:
+    post:
+      operationId: post-ping
+      tags:
+      - Events
+      - Internal
+      summary: Ping endpoint
+      description: Dispatch ping Event to configured Subscription endpoint.
+      requestBody:
+        description: Information about the Ping Event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Ping'
+            example:
+              companyId: 2342343
+              loanPartnerId: '123312'
+              webhookUrl: https://github.com
+      responses:
+        '200':
+          description: Ping was successfully generated.
+        '400':
+          $ref: '#/components/responses/InvalidRequestParameters'
+  /categories:
+    parameters:
+    - $ref: '#/components/parameters/Language'
+    get:
+      operationId: get-categories
+      tags:
+      - Event Types
+      description: Returns a list of all possible Event Type Categories.
+      summary: Get Event Categories.
+      responses:
+        '200':
+          description: List of Event Type Categories.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventCategoryDescriptions'
+              example:
+                data:
+                - name: SUBMISSION
+                  description: Events in this category refer to specific changes based
+                    on a Submission of a specific loan partner.
+                - name: GENERAL
+                  description: Events in this category refer to this domain and f.e.
+                    will check the availability of a declared web hook.
+        '400':
+          $ref: '#/components/responses/InvalidRequestParameters'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/ResourceNotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /categories/{typeCategory}:
+    parameters:
+    - $ref: '#/components/parameters/EventTypeCategory'
+    - $ref: '#/components/parameters/Language'
+    get:
+      operationId: get-category
+      tags:
+      - Event Types
+      description: Returns a specific Event Type Category with its description.
+      summary: Get an Event Category.
+      responses:
+        '200':
+          description: Specific Event Category.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventCategoryDescription'
+              example:
+                name: SUBMISSION
+                description: Events in this category refer to specific changes based
+                  on a Submission of a specific loan partner.
+        '400':
+          $ref: '#/components/responses/InvalidRequestParameters'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/ResourceNotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /categories/{typeCategory}/names:
+    parameters:
+    - $ref: '#/components/parameters/EventTypeCategory'
+    - $ref: '#/components/parameters/Language'
+    get:
+      operationId: get-names
+      tags:
+      - Event Types
+      description: Returns a list of all possible Event Type Names for a specific
+        Event Type Category.
+      summary: Get Event Names.
+      responses:
+        '200':
+          description: List of Event Type Names.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventNameDescriptions'
+              example:
+                data:
+                - name: SUBMISSION_CREATED
+                  description: Submission created.
+                - name: SUBMISSION_CHANGED
+                  description: Submission changed.
+        '400':
+          $ref: '#/components/responses/InvalidRequestParameters'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/ResourceNotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /categories/{typeCategory}/names/{typeName}:
+    parameters:
+    - $ref: '#/components/parameters/EventTypeCategory'
+    - $ref: '#/components/parameters/Language'
+    - name: typeName
+      in: path
+      description: The unique name of a specific Event Type Name.
+      required: true
+      schema:
+        type: string
+      example: SUBMISSION_CREATED
+    get:
+      operationId: get-name
+      tags:
+      - Event Types
+      description: Returns a specific Event Type Name with its description for a specific
+        Event Type Category.
+      summary: Get an Event Type Name.
+      responses:
+        '200':
+          description: Specific Event Type Name.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventNameDescription'
+              example:
+                name: SUBMISSION_CREATED
+                description: Submission created.
+        '400':
+          $ref: '#/components/responses/InvalidRequestParameters'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/ResourceNotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /info:
+    get:
+      summary: Get API service status and info
+      description: Delivers information about API service status and basic information
+        about the current version
+      operationId: getServiceInfo
+      tags:
+      - Info
+      responses:
+        '200':
+          description: Service Info is returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceInfo'
+              example:
+                apiSpecificationVersion: 2.0.0
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
