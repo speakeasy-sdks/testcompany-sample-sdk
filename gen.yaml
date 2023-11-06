@@ -1,0 +1,21 @@
+configVersion: 1.0.0
+generation:
+  comments:
+    disableComments: false
+    omitDescriptionIfSummaryPresent: false
+  baseServerURL: ""
+  flattenGlobalSecurity: true
+  sdkClassName: Event-Notification
+  singleTagPerOp: false
+  tagNamespacingDisabled: false
+java:
+  version: 0.0.1
+  artifactID: Event-Notification
+  companyEmail: info@mycompany.com
+  companyName: My Company
+  companyURL: www.mycompany.com
+  githubURL: github.com/owner/repo
+  groupID: testcompany
+  maxMethodParams: 4
+  ossrhURL: https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/
+  projectName: Event-Notification
