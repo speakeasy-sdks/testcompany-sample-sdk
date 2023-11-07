@@ -1,4 +1,4 @@
-# EndPointEndPointType
+# EndPointType
 
 The specific endPointType, holding information, how you receive your Events.
 

@@ -1,5 +1,5 @@
 # Events
-(*events*)
+(*.events*)
 
 ## Overview
 

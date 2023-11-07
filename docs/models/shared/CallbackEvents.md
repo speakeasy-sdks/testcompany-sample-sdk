@@ -1,4 +1,4 @@
-# CallbackEventsInput
+# CallbackEvents
 
 Resource to acknowledge a specific Event.
 

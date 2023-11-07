@@ -1,5 +1,5 @@
 # Info
-(*info*)
+(*.info*)
 
 ## Overview
 

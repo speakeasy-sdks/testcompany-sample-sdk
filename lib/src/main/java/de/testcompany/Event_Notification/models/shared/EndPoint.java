@@ -15,14 +15,14 @@ public class EndPoint {
      * The specific endPointType, holding information, how you receive your Events.
      */
     @JsonProperty("endPointType")
-    public EndPointEndPointType endPointType;
+    public EndPointType endPointType;
 
-    public EndPoint withEndPointType(EndPointEndPointType endPointType) {
+    public EndPoint withEndPointType(EndPointType endPointType) {
         this.endPointType = endPointType;
         return this;
     }
     
-    public EndPoint(@JsonProperty("endPointType") EndPointEndPointType endPointType) {
+    public EndPoint(@JsonProperty("endPointType") EndPointType endPointType) {
         this.endPointType = endPointType;
   }
 }

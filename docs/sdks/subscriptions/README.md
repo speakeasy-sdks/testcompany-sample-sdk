@@ -1,5 +1,5 @@
 # Subscriptions
-(*subscriptions*)
+(*.subscriptions*)
 
 ## Overview
 
@@ -177,9 +177,9 @@ import de.testcompany.Event_Notification.EventNotification;
 import de.testcompany.Event_Notification.models.callbacks.PostSubscriptionPostNewEventResponse;
 import de.testcompany.Event_Notification.models.operations.PostSubscriptionResponse;
 import de.testcompany.Event_Notification.models.shared.Callback;
-import de.testcompany.Event_Notification.models.shared.CallbackEventsInput;
+import de.testcompany.Event_Notification.models.shared.CallbackEvents;
 import de.testcompany.Event_Notification.models.shared.EndPoint;
-import de.testcompany.Event_Notification.models.shared.EndPointEndPointType;
+import de.testcompany.Event_Notification.models.shared.EndPointType;
 import de.testcompany.Event_Notification.models.shared.EventInput;
 import de.testcompany.Event_Notification.models.shared.EventType;
 import de.testcompany.Event_Notification.models.shared.EventTypeSingle;
@@ -196,7 +196,7 @@ public class Application {
                 }})
                 .build();
 
-            de.testcompany.Event_Notification.models.shared.SubscriptionInput req = new SubscriptionInput(new EndPoint(EndPointEndPointType.WEBHOOK), "All Submission events"){{
+            de.testcompany.Event_Notification.models.shared.SubscriptionInput req = new SubscriptionInput(new EndPoint(EndPointType.WEBHOOK), "All Submission events"){{
                 companyId = 209547353334L;
                 eventTypes = new de.testcompany.Event_Notification.models.shared.EventType[]{{
                     add(new EventType(){{

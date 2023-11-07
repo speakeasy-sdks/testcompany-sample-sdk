@@ -7,16 +7,16 @@ package de.testcompany.Event_Notification.models.shared;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * EndPointEndPointType - The specific endPointType, holding information, how you receive your Events.
+ * EndPointType - The specific endPointType, holding information, how you receive your Events.
  */
-public enum EndPointEndPointType {
+public enum EndPointType {
     NONE("None"),
     WEBHOOK("Webhook");
 
     @JsonValue
     public final String value;
 
-    private EndPointEndPointType(String value) {
+    private EndPointType(String value) {
         this.value = value;
     }
 }

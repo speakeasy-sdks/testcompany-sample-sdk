@@ -39,13 +39,13 @@ public class EventNotification {
      */
     public EventTypes eventTypes;
     /**
-     * Events hold basic information about what happened in the application. Based on the Events it's possible to get the specific data of the underlying resource.
-     */
-    public Events events;
-    /**
      * General information about the API and the connectivity
      */
     public Info info;
+    /**
+     * Events hold basic information about what happened in the application. Based on the Events it's possible to get the specific data of the underlying resource.
+     */
+    public Events events;
     /**
      * Tag to describe internal endpoints
      */
@@ -162,9 +162,9 @@ public class EventNotification {
 		
 		this.eventTypes = new EventTypes(this.sdkConfiguration);
 		
-		this.events = new Events(this.sdkConfiguration);
-		
 		this.info = new Info(this.sdkConfiguration);
+		
+		this.events = new Events(this.sdkConfiguration);
 		
 		this.internal = new Internal(this.sdkConfiguration);
 		
