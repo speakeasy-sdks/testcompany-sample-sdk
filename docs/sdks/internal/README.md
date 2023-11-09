@@ -1,5 +1,5 @@
 # Internal
-(*.internal*)
+(*internal*)
 
 ## Overview
 

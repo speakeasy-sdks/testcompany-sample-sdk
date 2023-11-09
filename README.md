@@ -20,7 +20,7 @@ It has been generated successfully based on your OpenAPI spec. However, it is no
 ### Gradle
 
 ```groovy
-implementation 'de.testcompany.Event_Notification:Event-Notification:0.2.0'
+implementation 'de.testcompany.Event_Notification:Event-Notification:0.3.0'
 ```
 <!-- End SDK Installation -->
 
@@ -60,28 +60,28 @@ public class Application {
 ## Available Resources and Operations
 
 
-### [.eventTypes](docs/sdks/eventtypes/README.md)
+### [eventTypes](docs/sdks/eventtypes/README.md)
 
 * [getCategories](docs/sdks/eventtypes/README.md#getcategories) - Get Event Categories.
 * [getCategory](docs/sdks/eventtypes/README.md#getcategory) - Get an Event Category.
 * [getName](docs/sdks/eventtypes/README.md#getname) - Get an Event Type Name.
 * [getNames](docs/sdks/eventtypes/README.md#getnames) - Get Event Names.
 
-### [.info](docs/sdks/info/README.md)
+### [info](docs/sdks/info/README.md)
 
 * [getServiceInfo](docs/sdks/info/README.md#getserviceinfo) - Get API service status and info
 
-### [.events](docs/sdks/events/README.md)
+### [events](docs/sdks/events/README.md)
 
 * [getEvents](docs/sdks/events/README.md#getevents) - Get Event Notifications.
 * [postPing](docs/sdks/events/README.md#postping) - Ping endpoint
 * [updateEvents](docs/sdks/events/README.md#updateevents) - Update Event Notifications.
 
-### [.internal](docs/sdks/internal/README.md)
+### [internal](docs/sdks/internal/README.md)
 
 * [postPing](docs/sdks/internal/README.md#postping) - Ping endpoint
 
-### [.subscriptions](docs/sdks/subscriptions/README.md)
+### [subscriptions](docs/sdks/subscriptions/README.md)
 
 * [deleteSubscription](docs/sdks/subscriptions/README.md#deletesubscription) - Delete a Subscription.
 * [getSubscription](docs/sdks/subscriptions/README.md#getsubscription) - Get a Subscription.

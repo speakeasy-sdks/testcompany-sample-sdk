@@ -1,5 +1,5 @@
 # EventTypes
-(*.eventTypes*)
+(*eventTypes*)
 
 ## Overview
 

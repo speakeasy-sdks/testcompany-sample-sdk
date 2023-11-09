@@ -1,5 +1,5 @@
 # Subscriptions
-(*.subscriptions*)
+(*subscriptions*)
 
 ## Overview
 
