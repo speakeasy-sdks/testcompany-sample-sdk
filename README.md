@@ -14,18 +14,21 @@ It has been generated successfully based on your OpenAPI spec. However, it is no
 - [ ] ♻️ Refine your SDK quickly by iterating locally with the [Speakeasy CLI](https://github.com/speakeasy-api/speakeasy)
 - [ ] 🎁 Publish your SDK to package managers by [configuring automatic publishing](https://www.speakeasyapi.dev/docs/productionize-sdks/publish-sdks)
 - [ ] ✨ When ready to productionize, delete this section from the README
-<!-- Start SDK Installation -->
+<!-- Start SDK Installation [installation] -->
 ## SDK Installation
 
 ### Gradle
 
 ```groovy
-implementation 'de.testcompany.Event_Notification:Event-Notification:0.3.0'
+implementation 'de.testcompany.Event_Notification:Event-Notification:0.4.0'
 ```
-<!-- End SDK Installation -->
+<!-- End SDK Installation [installation] -->
 
+<!-- Start SDK Example Usage [usage] -->
 ## SDK Example Usage
-<!-- Start SDK Example Usage -->
+
+### Example
+
 ```java
 package hello.world;
 
@@ -38,12 +41,13 @@ public class Application {
     public static void main(String[] args) {
         try {
             EventNotification sdk = EventNotification.builder()
-                .setSecurity(new Security("string"){{
-                    bearerAuth = "";
+                .setSecurity(new Security(
+                "string"){{
+                    bearerAuth = "<YOUR_BEARER_TOKEN_HERE>";
                 }})
                 .build();
 
-            GetCategoriesResponse res = sdk.eventTypes.getCategories("string");
+            de.testcompany.Event_Notification.models.operations.GetCategoriesResponse res = sdk.eventTypes.getCategories("string");
 
             if (res.eventCategoryDescriptions != null) {
                 // handle response
@@ -54,11 +58,10 @@ public class Application {
     }
 }
 ```
-<!-- End SDK Example Usage -->
+<!-- End SDK Example Usage [usage] -->
 
-<!-- Start SDK Available Operations -->
+<!-- Start Available Resources and Operations [operations] -->
 ## Available Resources and Operations
-
 
 ### [eventTypes](docs/sdks/eventtypes/README.md)
 
@@ -88,11 +91,29 @@ public class Application {
 * [getSubscriptions](docs/sdks/subscriptions/README.md#getsubscriptions) - Get Subscriptions.
 * [postSubscription](docs/sdks/subscriptions/README.md#postsubscription) - Create a Subscription.
 * [updateSubscription](docs/sdks/subscriptions/README.md#updatesubscription) - Update a Subscription.
-<!-- End SDK Available Operations -->
+<!-- End Available Resources and Operations [operations] -->
 
-<!-- Start Dev Containers -->
+<!-- Start Server Selection [server] -->
+## Server Selection
 
-<!-- End Dev Containers -->
+## Server Selection
+
+### Select Server by Index
+
+You can override the default server globally using the `setServerIndex` option when initializing the SDK client instance. The selected server will then be used as the default on the operations that use it. This table lists the indexes associated with the available servers:
+
+| # | Server | Variables |
+| - | ------ | --------- |
+| 0 | `https://event-notification-service.ehyp.prod.interhyp-cloud.de` | None |
+| 1 | `https://event-notification-service.ehyp.dev.interhyp-cloud.de` | None |
+
+
+
+
+### Override Server URL Per-Client
+
+The default server can also be overridden globally using the `setServerURL` option when initializing the SDK client instance. For example:
+<!-- End Server Selection [server] -->
 
 <!-- Placeholder for Future Speakeasy SDK Sections -->
 

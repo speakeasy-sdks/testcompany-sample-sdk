@@ -26,12 +26,13 @@ public class Application {
     public static void main(String[] args) {
         try {
             EventNotification sdk = EventNotification.builder()
-                .setSecurity(new Security("string"){{
-                    bearerAuth = "";
+                .setSecurity(new Security(
+                "string"){{
+                    bearerAuth = "<YOUR_BEARER_TOKEN_HERE>";
                 }})
                 .build();
 
-            GetServiceInfoResponse res = sdk.info.getServiceInfo();
+            de.testcompany.Event_Notification.models.operations.GetServiceInfoResponse res = sdk.info.getServiceInfo();
 
             if (res.serviceInfo != null) {
                 // handle response

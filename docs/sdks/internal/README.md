@@ -27,17 +27,20 @@ public class Application {
     public static void main(String[] args) {
         try {
             EventNotification sdk = EventNotification.builder()
-                .setSecurity(new Security("string"){{
-                    bearerAuth = "";
+                .setSecurity(new Security(
+                "string"){{
+                    bearerAuth = "<YOUR_BEARER_TOKEN_HERE>";
                 }})
                 .build();
 
-            de.testcompany.Event_Notification.models.shared.Ping req = new Ping("https://server.com"){{
+            de.testcompany.Event_Notification.models.shared.Ping req = new Ping(
+                "https://server.com"){{
                 companyId = 209547353334L;
                 loanPartnerId = "123312";
-            }};            
 
-            PostPingResponse res = sdk.internal.postPing(req);
+            }};
+
+            de.testcompany.Event_Notification.models.operations.PostPingResponse res = sdk.internal.postPing(req);
 
             if (res.statusCode == 200) {
                 // handle response

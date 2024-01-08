@@ -45,13 +45,12 @@ public class Info {
         HttpResponse<byte[]> httpRes = client.send(req);
 
         String contentType = httpRes.headers().firstValue("Content-Type").orElse("application/octet-stream");
-
-        de.testcompany.Event_Notification.models.operations.GetServiceInfoResponse res = new de.testcompany.Event_Notification.models.operations.GetServiceInfoResponse(contentType, httpRes.statusCode()) {{
+        
+        de.testcompany.Event_Notification.models.operations.GetServiceInfoResponse res = new de.testcompany.Event_Notification.models.operations.GetServiceInfoResponse(contentType, httpRes.statusCode(), httpRes) {{
             serviceInfo = null;
             oAuthProblem = null;
             rfc7807Problem = null;
         }};
-        res.rawResponse = httpRes;
         
         if (httpRes.statusCode() == 200) {
             if (de.testcompany.Event_Notification.utils.Utils.matchContentType(contentType, "application/json")) {

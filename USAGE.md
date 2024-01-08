@@ -1,6 +1,4 @@
-<!-- Start SDK Example Usage -->
-
-
+<!-- Start SDK Example Usage [usage] -->
 ```java
 package hello.world;
 
@@ -13,12 +11,13 @@ public class Application {
     public static void main(String[] args) {
         try {
             EventNotification sdk = EventNotification.builder()
-                .setSecurity(new Security("string"){{
-                    bearerAuth = "";
+                .setSecurity(new Security(
+                "string"){{
+                    bearerAuth = "<YOUR_BEARER_TOKEN_HERE>";
                 }})
                 .build();
 
-            GetCategoriesResponse res = sdk.eventTypes.getCategories("string");
+            de.testcompany.Event_Notification.models.operations.GetCategoriesResponse res = sdk.eventTypes.getCategories("string");
 
             if (res.eventCategoryDescriptions != null) {
                 // handle response
@@ -29,4 +28,4 @@ public class Application {
     }
 }
 ```
-<!-- End SDK Example Usage -->
+<!-- End SDK Example Usage [usage] -->

@@ -29,19 +29,22 @@ public class Application {
     public static void main(String[] args) {
         try {
             EventNotification sdk = EventNotification.builder()
-                .setSecurity(new Security("string"){{
-                    bearerAuth = "";
+                .setSecurity(new Security(
+                "string"){{
+                    bearerAuth = "<YOUR_BEARER_TOKEN_HERE>";
                 }})
                 .build();
 
-            GetEventsRequest req = new GetEventsRequest("string"){{
+            de.testcompany.Event_Notification.models.operations.GetEventsRequest req = new GetEventsRequest(
+                "string"){{
                 after = "string";
                 before = "string";
                 limit = 630035;
                 status = "string";
-            }};            
 
-            GetEventsResponse res = sdk.events.getEvents(req);
+            }};
+
+            de.testcompany.Event_Notification.models.operations.GetEventsResponse res = sdk.events.getEvents(req);
 
             if (res.events != null) {
                 // handle response
@@ -83,17 +86,20 @@ public class Application {
     public static void main(String[] args) {
         try {
             EventNotification sdk = EventNotification.builder()
-                .setSecurity(new Security("string"){{
-                    bearerAuth = "";
+                .setSecurity(new Security(
+                "string"){{
+                    bearerAuth = "<YOUR_BEARER_TOKEN_HERE>";
                 }})
                 .build();
 
-            de.testcompany.Event_Notification.models.shared.Ping req = new Ping("https://server.com"){{
+            de.testcompany.Event_Notification.models.shared.Ping req = new Ping(
+                "https://server.com"){{
                 companyId = 209547353334L;
                 loanPartnerId = "123312";
-            }};            
 
-            PostPingResponse res = sdk.events.postPing(req);
+            }};
+
+            de.testcompany.Event_Notification.models.operations.PostPingResponse res = sdk.events.postPing(req);
 
             if (res.statusCode == 200) {
                 // handle response
@@ -131,22 +137,27 @@ import de.testcompany.Event_Notification.models.operations.UpdateEventsRequest;
 import de.testcompany.Event_Notification.models.operations.UpdateEventsResponse;
 import de.testcompany.Event_Notification.models.shared.PatchOperation;
 import de.testcompany.Event_Notification.models.shared.PatchOperationEvent;
+import de.testcompany.Event_Notification.models.shared.Path;
 import de.testcompany.Event_Notification.models.shared.Security;
 
 public class Application {
     public static void main(String[] args) {
         try {
             EventNotification sdk = EventNotification.builder()
-                .setSecurity(new Security("string"){{
-                    bearerAuth = "";
+                .setSecurity(new Security(
+                "string"){{
+                    bearerAuth = "<YOUR_BEARER_TOKEN_HERE>";
                 }})
                 .build();
 
-            UpdateEventsResponse res = sdk.events.updateEvents("string", new de.testcompany.Event_Notification.models.shared.PatchOperationEvent[]{{
-                add(new PatchOperationEvent("91fba95d-c3c9-4a67-a5d4-fd0b0d4870f4", PatchOperation.REPLACE, "/description"){{
+            de.testcompany.Event_Notification.models.operations.UpdateEventsResponse res = sdk.events.updateEvents("string", new de.testcompany.Event_Notification.models.shared.PatchOperationEvent[]{{
+                add(new PatchOperationEvent(
+                "91fba95d-c3c9-4a67-a5d4-fd0b0d4870f4",
+                PatchOperation.REPLACE,
+                Path.ROOT_EVENT_STATUS){{
                     eventId = "91fba95d-c3c9-4a67-a5d4-fd0b0d4870f4";
                     op = PatchOperation.REPLACE;
-                    path = "/description";
+                    path = Path.ROOT_EVENT_STATUS;
                     value = "A new description";
                 }}),
             }});

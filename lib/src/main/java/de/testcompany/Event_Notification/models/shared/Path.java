@@ -7,15 +7,15 @@ package de.testcompany.Event_Notification.models.shared;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * PatchOperation - An operation is applied to the data structures represented by a JSON document.
+ * Path - Patchable paths of an Event.
  */
-public enum PatchOperation {
-    REPLACE("replace");
+public enum Path {
+    ROOT_EVENT_STATUS("/eventStatus");
 
     @JsonValue
     public final String value;
 
-    private PatchOperation(String value) {
+    private Path(String value) {
         this.value = value;
     }
 }

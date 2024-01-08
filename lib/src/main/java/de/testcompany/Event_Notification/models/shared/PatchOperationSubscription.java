@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * PatchOperationSubscription - JSON Patch definition according to &lt;a href='https://tools.ietf.org/html/rfc6902'&gt;RFC 6902&lt;/a&gt;.
+ * PatchOperationSubscription - All patchable data of a subscription.
  */
 
 public class PatchOperationSubscription {
@@ -25,12 +25,12 @@ public class PatchOperationSubscription {
     }
     
     /**
-     * JSON-Pointer value [&lt;a href='https://tools.ietf.org/html/rfc6901'&gt;RFC 6901&lt;/a&gt;] that references a location within the target document (the "target location") where the operation is performed.
+     * Patchable paths of a subscription.
      */
     @JsonProperty("path")
-    public String path;
+    public PatchOperationSubscriptionPath path;
 
-    public PatchOperationSubscription withPath(String path) {
+    public PatchOperationSubscription withPath(PatchOperationSubscriptionPath path) {
         this.path = path;
         return this;
     }
@@ -47,7 +47,7 @@ public class PatchOperationSubscription {
         return this;
     }
     
-    public PatchOperationSubscription(@JsonProperty("op") PatchOperation op, @JsonProperty("path") String path) {
+    public PatchOperationSubscription(@JsonProperty("op") PatchOperation op, @JsonProperty("path") PatchOperationSubscriptionPath path) {
         this.op = op;
         this.path = path;
   }

@@ -30,12 +30,13 @@ public class Application {
     public static void main(String[] args) {
         try {
             EventNotification sdk = EventNotification.builder()
-                .setSecurity(new Security("string"){{
-                    bearerAuth = "";
+                .setSecurity(new Security(
+                "string"){{
+                    bearerAuth = "<YOUR_BEARER_TOKEN_HERE>";
                 }})
                 .build();
 
-            GetCategoriesResponse res = sdk.eventTypes.getCategories("string");
+            de.testcompany.Event_Notification.models.operations.GetCategoriesResponse res = sdk.eventTypes.getCategories("string");
 
             if (res.eventCategoryDescriptions != null) {
                 // handle response
@@ -77,12 +78,13 @@ public class Application {
     public static void main(String[] args) {
         try {
             EventNotification sdk = EventNotification.builder()
-                .setSecurity(new Security("string"){{
-                    bearerAuth = "";
+                .setSecurity(new Security(
+                "string"){{
+                    bearerAuth = "<YOUR_BEARER_TOKEN_HERE>";
                 }})
                 .build();
 
-            GetCategoryResponse res = sdk.eventTypes.getCategory("string", "string");
+            de.testcompany.Event_Notification.models.operations.GetCategoryResponse res = sdk.eventTypes.getCategory("string", "string");
 
             if (res.eventCategoryDescription != null) {
                 // handle response
@@ -125,12 +127,13 @@ public class Application {
     public static void main(String[] args) {
         try {
             EventNotification sdk = EventNotification.builder()
-                .setSecurity(new Security("string"){{
-                    bearerAuth = "";
+                .setSecurity(new Security(
+                "string"){{
+                    bearerAuth = "<YOUR_BEARER_TOKEN_HERE>";
                 }})
                 .build();
 
-            GetNameResponse res = sdk.eventTypes.getName("string", "string", "string");
+            de.testcompany.Event_Notification.models.operations.GetNameResponse res = sdk.eventTypes.getName("string", "string", "string");
 
             if (res.eventNameDescription != null) {
                 // handle response
@@ -174,12 +177,13 @@ public class Application {
     public static void main(String[] args) {
         try {
             EventNotification sdk = EventNotification.builder()
-                .setSecurity(new Security("string"){{
-                    bearerAuth = "";
+                .setSecurity(new Security(
+                "string"){{
+                    bearerAuth = "<YOUR_BEARER_TOKEN_HERE>";
                 }})
                 .build();
 
-            GetNamesResponse res = sdk.eventTypes.getNames("string", "string");
+            de.testcompany.Event_Notification.models.operations.GetNamesResponse res = sdk.eventTypes.getNames("string", "string");
 
             if (res.eventNameDescriptions != null) {
                 // handle response

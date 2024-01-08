@@ -1,6 +1,6 @@
 # Event
 
-Primary Key of a Subscription.
+Basic data of a specific Event.
 
 
 ## Fields

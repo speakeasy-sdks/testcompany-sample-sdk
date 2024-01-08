@@ -66,13 +66,12 @@ public class EventTypes {
         HttpResponse<byte[]> httpRes = client.send(req);
 
         String contentType = httpRes.headers().firstValue("Content-Type").orElse("application/octet-stream");
-
-        de.testcompany.Event_Notification.models.operations.GetCategoriesResponse res = new de.testcompany.Event_Notification.models.operations.GetCategoriesResponse(contentType, httpRes.statusCode()) {{
+        
+        de.testcompany.Event_Notification.models.operations.GetCategoriesResponse res = new de.testcompany.Event_Notification.models.operations.GetCategoriesResponse(contentType, httpRes.statusCode(), httpRes) {{
             eventCategoryDescriptions = null;
             rfc7807Problem = null;
             oAuthProblem = null;
         }};
-        res.rawResponse = httpRes;
         
         if (httpRes.statusCode() == 200) {
             if (de.testcompany.Event_Notification.utils.Utils.matchContentType(contentType, "application/json")) {
@@ -143,13 +142,12 @@ public class EventTypes {
         HttpResponse<byte[]> httpRes = client.send(req);
 
         String contentType = httpRes.headers().firstValue("Content-Type").orElse("application/octet-stream");
-
-        de.testcompany.Event_Notification.models.operations.GetCategoryResponse res = new de.testcompany.Event_Notification.models.operations.GetCategoryResponse(contentType, httpRes.statusCode()) {{
+        
+        de.testcompany.Event_Notification.models.operations.GetCategoryResponse res = new de.testcompany.Event_Notification.models.operations.GetCategoryResponse(contentType, httpRes.statusCode(), httpRes) {{
             eventCategoryDescription = null;
             rfc7807Problem = null;
             oAuthProblem = null;
         }};
-        res.rawResponse = httpRes;
         
         if (httpRes.statusCode() == 200) {
             if (de.testcompany.Event_Notification.utils.Utils.matchContentType(contentType, "application/json")) {
@@ -222,13 +220,12 @@ public class EventTypes {
         HttpResponse<byte[]> httpRes = client.send(req);
 
         String contentType = httpRes.headers().firstValue("Content-Type").orElse("application/octet-stream");
-
-        de.testcompany.Event_Notification.models.operations.GetNameResponse res = new de.testcompany.Event_Notification.models.operations.GetNameResponse(contentType, httpRes.statusCode()) {{
+        
+        de.testcompany.Event_Notification.models.operations.GetNameResponse res = new de.testcompany.Event_Notification.models.operations.GetNameResponse(contentType, httpRes.statusCode(), httpRes) {{
             eventNameDescription = null;
             rfc7807Problem = null;
             oAuthProblem = null;
         }};
-        res.rawResponse = httpRes;
         
         if (httpRes.statusCode() == 200) {
             if (de.testcompany.Event_Notification.utils.Utils.matchContentType(contentType, "application/json")) {
@@ -299,13 +296,12 @@ public class EventTypes {
         HttpResponse<byte[]> httpRes = client.send(req);
 
         String contentType = httpRes.headers().firstValue("Content-Type").orElse("application/octet-stream");
-
-        de.testcompany.Event_Notification.models.operations.GetNamesResponse res = new de.testcompany.Event_Notification.models.operations.GetNamesResponse(contentType, httpRes.statusCode()) {{
+        
+        de.testcompany.Event_Notification.models.operations.GetNamesResponse res = new de.testcompany.Event_Notification.models.operations.GetNamesResponse(contentType, httpRes.statusCode(), httpRes) {{
             eventNameDescriptions = null;
             rfc7807Problem = null;
             oAuthProblem = null;
         }};
-        res.rawResponse = httpRes;
         
         if (httpRes.statusCode() == 200) {
             if (de.testcompany.Event_Notification.utils.Utils.matchContentType(contentType, "application/json")) {

@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * SubscriptionInput - Primary Key of a Subscription.
+ * SubscriptionInput - Ressource that contains all data to manage an Event Subscription.
  */
 
 public class SubscriptionInput {

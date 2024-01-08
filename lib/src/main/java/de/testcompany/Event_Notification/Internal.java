@@ -52,11 +52,10 @@ public class Internal {
         HttpResponse<byte[]> httpRes = client.send(req);
 
         String contentType = httpRes.headers().firstValue("Content-Type").orElse("application/octet-stream");
-
-        de.testcompany.Event_Notification.models.operations.PostPingResponse res = new de.testcompany.Event_Notification.models.operations.PostPingResponse(contentType, httpRes.statusCode()) {{
+        
+        de.testcompany.Event_Notification.models.operations.PostPingResponse res = new de.testcompany.Event_Notification.models.operations.PostPingResponse(contentType, httpRes.statusCode(), httpRes) {{
             rfc7807Problem = null;
         }};
-        res.rawResponse = httpRes;
         
         if (httpRes.statusCode() == 200) {
         }

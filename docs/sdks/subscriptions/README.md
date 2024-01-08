@@ -31,12 +31,13 @@ public class Application {
     public static void main(String[] args) {
         try {
             EventNotification sdk = EventNotification.builder()
-                .setSecurity(new Security("string"){{
-                    bearerAuth = "";
+                .setSecurity(new Security(
+                "string"){{
+                    bearerAuth = "<YOUR_BEARER_TOKEN_HERE>";
                 }})
                 .build();
 
-            DeleteSubscriptionResponse res = sdk.subscriptions.deleteSubscription("string");
+            de.testcompany.Event_Notification.models.operations.DeleteSubscriptionResponse res = sdk.subscriptions.deleteSubscription("string");
 
             if (res.statusCode == 200) {
                 // handle response
@@ -78,12 +79,13 @@ public class Application {
     public static void main(String[] args) {
         try {
             EventNotification sdk = EventNotification.builder()
-                .setSecurity(new Security("string"){{
-                    bearerAuth = "";
+                .setSecurity(new Security(
+                "string"){{
+                    bearerAuth = "<YOUR_BEARER_TOKEN_HERE>";
                 }})
                 .build();
 
-            GetSubscriptionResponse res = sdk.subscriptions.getSubscription("string");
+            de.testcompany.Event_Notification.models.operations.GetSubscriptionResponse res = sdk.subscriptions.getSubscription("string");
 
             if (res.subscription != null) {
                 // handle response
@@ -125,20 +127,23 @@ public class Application {
     public static void main(String[] args) {
         try {
             EventNotification sdk = EventNotification.builder()
-                .setSecurity(new Security("string"){{
-                    bearerAuth = "";
+                .setSecurity(new Security(
+                "string"){{
+                    bearerAuth = "<YOUR_BEARER_TOKEN_HERE>";
                 }})
                 .build();
 
-            GetSubscriptionsRequest req = new GetSubscriptionsRequest(){{
+            de.testcompany.Event_Notification.models.operations.GetSubscriptionsRequest req = new GetSubscriptionsRequest(
+){{
                 after = "string";
                 before = "string";
                 companyId = 366979L;
                 limit = 462018;
                 loanPartnerId = "string";
-            }};            
 
-            GetSubscriptionsResponse res = sdk.subscriptions.getSubscriptions(req);
+            }};
+
+            de.testcompany.Event_Notification.models.operations.GetSubscriptionsResponse res = sdk.subscriptions.getSubscriptions(req);
 
             if (res.subscriptions != null) {
                 // handle response
@@ -191,24 +196,30 @@ public class Application {
     public static void main(String[] args) {
         try {
             EventNotification sdk = EventNotification.builder()
-                .setSecurity(new Security("string"){{
-                    bearerAuth = "";
+                .setSecurity(new Security(
+                "string"){{
+                    bearerAuth = "<YOUR_BEARER_TOKEN_HERE>";
                 }})
                 .build();
 
-            de.testcompany.Event_Notification.models.shared.SubscriptionInput req = new SubscriptionInput(new EndPoint(EndPointType.WEBHOOK), "All Submission events"){{
+            de.testcompany.Event_Notification.models.shared.SubscriptionInput req = new SubscriptionInput(
+                new EndPoint(
+                    EndPointType.WEBHOOK),
+                "All Submission events"){{
                 companyId = 209547353334L;
                 eventTypes = new de.testcompany.Event_Notification.models.shared.EventType[]{{
-                    add(new EventType(){{
+                    add(new EventType(
+                    ){{
                         names = new String[]{{
                             add("string"),
                         }};
                     }}),
                 }};
                 loanPartnerId = "123312";
-            }};            
 
-            PostSubscriptionResponse res = sdk.subscriptions.postSubscription(req);
+            }};
+
+            de.testcompany.Event_Notification.models.operations.PostSubscriptionResponse res = sdk.subscriptions.postSubscription(req);
 
             if (res.subscriptionId != null) {
                 // handle response
@@ -246,21 +257,25 @@ import de.testcompany.Event_Notification.models.operations.UpdateSubscriptionReq
 import de.testcompany.Event_Notification.models.operations.UpdateSubscriptionResponse;
 import de.testcompany.Event_Notification.models.shared.PatchOperation;
 import de.testcompany.Event_Notification.models.shared.PatchOperationSubscription;
+import de.testcompany.Event_Notification.models.shared.PatchOperationSubscriptionPath;
 import de.testcompany.Event_Notification.models.shared.Security;
 
 public class Application {
     public static void main(String[] args) {
         try {
             EventNotification sdk = EventNotification.builder()
-                .setSecurity(new Security("string"){{
-                    bearerAuth = "";
+                .setSecurity(new Security(
+                "string"){{
+                    bearerAuth = "<YOUR_BEARER_TOKEN_HERE>";
                 }})
                 .build();
 
-            UpdateSubscriptionResponse res = sdk.subscriptions.updateSubscription("string", new de.testcompany.Event_Notification.models.shared.PatchOperationSubscription[]{{
-                add(new PatchOperationSubscription(PatchOperation.REPLACE, "/description"){{
+            de.testcompany.Event_Notification.models.operations.UpdateSubscriptionResponse res = sdk.subscriptions.updateSubscription("string", new de.testcompany.Event_Notification.models.shared.PatchOperationSubscription[]{{
+                add(new PatchOperationSubscription(
+                PatchOperation.REPLACE,
+                PatchOperationSubscriptionPath.ROOT_SUBSCRIPTION_NAME){{
                     op = PatchOperation.REPLACE;
-                    path = "/description";
+                    path = PatchOperationSubscriptionPath.ROOT_SUBSCRIPTION_NAME;
                     value = "A new description";
                 }}),
             }});

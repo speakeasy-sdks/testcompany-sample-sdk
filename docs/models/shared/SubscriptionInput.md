@@ -1,6 +1,6 @@
 # SubscriptionInput
 
-Primary Key of a Subscription.
+Ressource that contains all data to manage an Event Subscription.
 
 
 ## Fields

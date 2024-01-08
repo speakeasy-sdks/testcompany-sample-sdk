@@ -14,7 +14,7 @@ import de.testcompany.Event_Notification.utils.DateTimeSerializer;
 import java.time.OffsetDateTime;
 
 /**
- * Event - Primary Key of a Subscription.
+ * Event - Basic data of a specific Event.
  */
 
 public class Event {

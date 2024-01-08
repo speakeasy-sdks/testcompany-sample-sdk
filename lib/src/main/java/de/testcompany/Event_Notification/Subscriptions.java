@@ -49,12 +49,11 @@ public class Subscriptions {
         HttpResponse<byte[]> httpRes = client.send(req);
 
         String contentType = httpRes.headers().firstValue("Content-Type").orElse("application/octet-stream");
-
-        de.testcompany.Event_Notification.models.operations.DeleteSubscriptionResponse res = new de.testcompany.Event_Notification.models.operations.DeleteSubscriptionResponse(contentType, httpRes.statusCode()) {{
+        
+        de.testcompany.Event_Notification.models.operations.DeleteSubscriptionResponse res = new de.testcompany.Event_Notification.models.operations.DeleteSubscriptionResponse(contentType, httpRes.statusCode(), httpRes) {{
             rfc7807Problem = null;
             oAuthProblem = null;
         }};
-        res.rawResponse = httpRes;
         
         if (httpRes.statusCode() == 204) {
         }
@@ -101,13 +100,12 @@ public class Subscriptions {
         HttpResponse<byte[]> httpRes = client.send(req);
 
         String contentType = httpRes.headers().firstValue("Content-Type").orElse("application/octet-stream");
-
-        de.testcompany.Event_Notification.models.operations.GetSubscriptionResponse res = new de.testcompany.Event_Notification.models.operations.GetSubscriptionResponse(contentType, httpRes.statusCode()) {{
+        
+        de.testcompany.Event_Notification.models.operations.GetSubscriptionResponse res = new de.testcompany.Event_Notification.models.operations.GetSubscriptionResponse(contentType, httpRes.statusCode(), httpRes) {{
             subscription = null;
             rfc7807Problem = null;
             oAuthProblem = null;
         }};
-        res.rawResponse = httpRes;
         
         if (httpRes.statusCode() == 200) {
             if (de.testcompany.Event_Notification.utils.Utils.matchContentType(contentType, "application/json")) {
@@ -163,13 +161,12 @@ public class Subscriptions {
         HttpResponse<byte[]> httpRes = client.send(req);
 
         String contentType = httpRes.headers().firstValue("Content-Type").orElse("application/octet-stream");
-
-        de.testcompany.Event_Notification.models.operations.GetSubscriptionsResponse res = new de.testcompany.Event_Notification.models.operations.GetSubscriptionsResponse(contentType, httpRes.statusCode()) {{
+        
+        de.testcompany.Event_Notification.models.operations.GetSubscriptionsResponse res = new de.testcompany.Event_Notification.models.operations.GetSubscriptionsResponse(contentType, httpRes.statusCode(), httpRes) {{
             subscriptions = null;
             rfc7807Problem = null;
             oAuthProblem = null;
         }};
-        res.rawResponse = httpRes;
         
         if (httpRes.statusCode() == 200) {
             if (de.testcompany.Event_Notification.utils.Utils.matchContentType(contentType, "application/json")) {
@@ -226,13 +223,12 @@ public class Subscriptions {
         HttpResponse<byte[]> httpRes = client.send(req);
 
         String contentType = httpRes.headers().firstValue("Content-Type").orElse("application/octet-stream");
-
-        de.testcompany.Event_Notification.models.operations.PostSubscriptionResponse res = new de.testcompany.Event_Notification.models.operations.PostSubscriptionResponse(contentType, httpRes.statusCode()) {{
+        
+        de.testcompany.Event_Notification.models.operations.PostSubscriptionResponse res = new de.testcompany.Event_Notification.models.operations.PostSubscriptionResponse(contentType, httpRes.statusCode(), httpRes) {{
             subscriptionId = null;
             rfc7807Problem = null;
             oAuthProblem = null;
         }};
-        res.rawResponse = httpRes;
         
         if (httpRes.statusCode() == 201) {
             if (de.testcompany.Event_Notification.utils.Utils.matchContentType(contentType, "application/json")) {
@@ -300,12 +296,11 @@ public class Subscriptions {
         HttpResponse<byte[]> httpRes = client.send(req);
 
         String contentType = httpRes.headers().firstValue("Content-Type").orElse("application/octet-stream");
-
-        de.testcompany.Event_Notification.models.operations.UpdateSubscriptionResponse res = new de.testcompany.Event_Notification.models.operations.UpdateSubscriptionResponse(contentType, httpRes.statusCode()) {{
+        
+        de.testcompany.Event_Notification.models.operations.UpdateSubscriptionResponse res = new de.testcompany.Event_Notification.models.operations.UpdateSubscriptionResponse(contentType, httpRes.statusCode(), httpRes) {{
             rfc7807Problem = null;
             oAuthProblem = null;
         }};
-        res.rawResponse = httpRes;
         
         if (httpRes.statusCode() == 204) {
         }

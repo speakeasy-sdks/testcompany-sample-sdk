@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * PatchOperationEvent - JSON Patch definition according to &lt;a href='https://tools.ietf.org/html/rfc6902'&gt;RFC 6902&lt;/a&gt;.
+ * PatchOperationEvent - All patchable data of an Event.
  */
 
 public class PatchOperationEvent {
@@ -36,12 +36,12 @@ public class PatchOperationEvent {
     }
     
     /**
-     * JSON-Pointer value [&lt;a href='https://tools.ietf.org/html/rfc6901'&gt;RFC 6901&lt;/a&gt;] that references a location within the target document (the "target location") where the operation is performed.
+     * Patchable paths of an Event.
      */
     @JsonProperty("path")
-    public String path;
+    public Path path;
 
-    public PatchOperationEvent withPath(String path) {
+    public PatchOperationEvent withPath(Path path) {
         this.path = path;
         return this;
     }
@@ -58,7 +58,7 @@ public class PatchOperationEvent {
         return this;
     }
     
-    public PatchOperationEvent(@JsonProperty("eventId") String eventId, @JsonProperty("op") PatchOperation op, @JsonProperty("path") String path) {
+    public PatchOperationEvent(@JsonProperty("eventId") String eventId, @JsonProperty("op") PatchOperation op, @JsonProperty("path") Path path) {
         this.eventId = eventId;
         this.op = op;
         this.path = path;
