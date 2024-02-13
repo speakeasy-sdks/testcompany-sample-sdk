@@ -20,7 +20,7 @@ It has been generated successfully based on your OpenAPI spec. However, it is no
 ### Gradle
 
 ```groovy
-implementation 'de.testcompany.Event_Notification:Event-Notification:0.4.0'
+implementation 'de.testcompany.Event_Notification:Event-Notification:0.4.1'
 ```
 <!-- End SDK Installation [installation] -->
 

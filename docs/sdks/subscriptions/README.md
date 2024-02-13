@@ -209,11 +209,7 @@ public class Application {
                 companyId = 209547353334L;
                 eventTypes = new de.testcompany.Event_Notification.models.shared.EventType[]{{
                     add(new EventType(
-                    ){{
-                        names = new String[]{{
-                            add("string"),
-                        }};
-                    }}),
+                    ){{}}),
                 }};
                 loanPartnerId = "123312";
 
