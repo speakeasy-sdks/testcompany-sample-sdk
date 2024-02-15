@@ -12,12 +12,12 @@ public class Application {
         try {
             EventNotification sdk = EventNotification.builder()
                 .setSecurity(new Security(
-                "string"){{
+                "<value>"){{
                     bearerAuth = "<YOUR_BEARER_TOKEN_HERE>";
                 }})
                 .build();
 
-            de.testcompany.Event_Notification.models.operations.GetCategoriesResponse res = sdk.eventTypes.getCategories("string");
+            de.testcompany.Event_Notification.models.operations.GetCategoriesResponse res = sdk.eventTypes.getCategories("<value>");
 
             if (res.eventCategoryDescriptions != null) {
                 // handle response

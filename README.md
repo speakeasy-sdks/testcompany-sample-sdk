@@ -20,7 +20,7 @@ It has been generated successfully based on your OpenAPI spec. However, it is no
 ### Gradle
 
 ```groovy
-implementation 'de.testcompany.Event_Notification:Event-Notification:0.4.1'
+implementation 'de.testcompany.Event_Notification:Event-Notification:0.5.0'
 ```
 <!-- End SDK Installation [installation] -->
 
@@ -42,12 +42,12 @@ public class Application {
         try {
             EventNotification sdk = EventNotification.builder()
                 .setSecurity(new Security(
-                "string"){{
+                "<value>"){{
                     bearerAuth = "<YOUR_BEARER_TOKEN_HERE>";
                 }})
                 .build();
 
-            de.testcompany.Event_Notification.models.operations.GetCategoriesResponse res = sdk.eventTypes.getCategories("string");
+            de.testcompany.Event_Notification.models.operations.GetCategoriesResponse res = sdk.eventTypes.getCategories("<value>");
 
             if (res.eventCategoryDescriptions != null) {
                 // handle response

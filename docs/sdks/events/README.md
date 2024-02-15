@@ -30,17 +30,17 @@ public class Application {
         try {
             EventNotification sdk = EventNotification.builder()
                 .setSecurity(new Security(
-                "string"){{
+                "<value>"){{
                     bearerAuth = "<YOUR_BEARER_TOKEN_HERE>";
                 }})
                 .build();
 
             de.testcompany.Event_Notification.models.operations.GetEventsRequest req = new GetEventsRequest(
-                "string"){{
-                after = "string";
-                before = "string";
+                "<value>"){{
+                after = "<value>";
+                before = "<value>";
                 limit = 630035;
-                status = "string";
+                status = "<value>";
 
             }};
 
@@ -87,7 +87,7 @@ public class Application {
         try {
             EventNotification sdk = EventNotification.builder()
                 .setSecurity(new Security(
-                "string"){{
+                "<value>"){{
                     bearerAuth = "<YOUR_BEARER_TOKEN_HERE>";
                 }})
                 .build();
@@ -145,12 +145,12 @@ public class Application {
         try {
             EventNotification sdk = EventNotification.builder()
                 .setSecurity(new Security(
-                "string"){{
+                "<value>"){{
                     bearerAuth = "<YOUR_BEARER_TOKEN_HERE>";
                 }})
                 .build();
 
-            de.testcompany.Event_Notification.models.operations.UpdateEventsResponse res = sdk.events.updateEvents("string", new de.testcompany.Event_Notification.models.shared.PatchOperationEvent[]{{
+            de.testcompany.Event_Notification.models.operations.UpdateEventsResponse res = sdk.events.updateEvents("<value>", new de.testcompany.Event_Notification.models.shared.PatchOperationEvent[]{{
                 add(new PatchOperationEvent(
                 "91fba95d-c3c9-4a67-a5d4-fd0b0d4870f4",
                 PatchOperation.REPLACE,

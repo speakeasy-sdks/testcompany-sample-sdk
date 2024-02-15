@@ -28,7 +28,7 @@ public class Application {
         try {
             EventNotification sdk = EventNotification.builder()
                 .setSecurity(new Security(
-                "string"){{
+                "<value>"){{
                     bearerAuth = "<YOUR_BEARER_TOKEN_HERE>";
                 }})
                 .build();

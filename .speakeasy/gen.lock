@@ -4,15 +4,15 @@ management:
   docChecksum: 8576067db60375eb36cd1694d1b9e41a
   docVersion: 1.2.0
   speakeasyVersion: internal
-  generationVersion: 2.253.0
-  releaseVersion: 0.4.1
-  configChecksum: d1207287ea7bfa6ee098c553e0d28e9c
+  generationVersion: 2.258.2
+  releaseVersion: 0.5.0
+  configChecksum: 2ed118632bd7ede802b482494c6b933e
   repoURL: https://github.com/speakeasy-sdks/testcompany-sample-sdk.git
   repoSubDirectory: .
   published: true
 features:
   java:
-    core: 3.2.2
+    core: 3.5.1
     flattening: 2.81.1
     globalSecurity: 2.81.2
     globalServerURLs: 2.82.1
@@ -30,6 +30,7 @@ generatedFiles:
   - gradle/wrapper/gradle-wrapper.properties
   - gradlew
   - gradlew.bat
+  - settings.gradle
   - lib/build.gradle
   - lib/src/main/java/de/testcompany/Event_Notification/utils/DateTimeDeserializer.java
   - lib/src/main/java/de/testcompany/Event_Notification/utils/DateTimeSerializer.java
@@ -53,7 +54,6 @@ generatedFiles:
   - lib/src/main/java/de/testcompany/Event_Notification/utils/SpeakeasyMetadata.java
   - lib/src/main/java/de/testcompany/Event_Notification/utils/Types.java
   - lib/src/main/java/de/testcompany/Event_Notification/utils/Utils.java
-  - settings.gradle
   - lib/src/main/java/de/testcompany/Event_Notification/models/operations/GetCategoriesRequest.java
   - lib/src/main/java/de/testcompany/Event_Notification/models/operations/GetCategoriesResponse.java
   - lib/src/main/java/de/testcompany/Event_Notification/models/operations/GetCategoryRequest.java

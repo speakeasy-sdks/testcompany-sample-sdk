@@ -32,12 +32,12 @@ public class Application {
         try {
             EventNotification sdk = EventNotification.builder()
                 .setSecurity(new Security(
-                "string"){{
+                "<value>"){{
                     bearerAuth = "<YOUR_BEARER_TOKEN_HERE>";
                 }})
                 .build();
 
-            de.testcompany.Event_Notification.models.operations.DeleteSubscriptionResponse res = sdk.subscriptions.deleteSubscription("string");
+            de.testcompany.Event_Notification.models.operations.DeleteSubscriptionResponse res = sdk.subscriptions.deleteSubscription("<value>");
 
             if (res.statusCode == 200) {
                 // handle response
@@ -80,12 +80,12 @@ public class Application {
         try {
             EventNotification sdk = EventNotification.builder()
                 .setSecurity(new Security(
-                "string"){{
+                "<value>"){{
                     bearerAuth = "<YOUR_BEARER_TOKEN_HERE>";
                 }})
                 .build();
 
-            de.testcompany.Event_Notification.models.operations.GetSubscriptionResponse res = sdk.subscriptions.getSubscription("string");
+            de.testcompany.Event_Notification.models.operations.GetSubscriptionResponse res = sdk.subscriptions.getSubscription("<value>");
 
             if (res.subscription != null) {
                 // handle response
@@ -128,18 +128,18 @@ public class Application {
         try {
             EventNotification sdk = EventNotification.builder()
                 .setSecurity(new Security(
-                "string"){{
+                "<value>"){{
                     bearerAuth = "<YOUR_BEARER_TOKEN_HERE>";
                 }})
                 .build();
 
             de.testcompany.Event_Notification.models.operations.GetSubscriptionsRequest req = new GetSubscriptionsRequest(
 ){{
-                after = "string";
-                before = "string";
+                after = "<value>";
+                before = "<value>";
                 companyId = 366979L;
                 limit = 462018;
-                loanPartnerId = "string";
+                loanPartnerId = "<value>";
 
             }};
 
@@ -197,7 +197,7 @@ public class Application {
         try {
             EventNotification sdk = EventNotification.builder()
                 .setSecurity(new Security(
-                "string"){{
+                "<value>"){{
                     bearerAuth = "<YOUR_BEARER_TOKEN_HERE>";
                 }})
                 .build();
@@ -261,12 +261,12 @@ public class Application {
         try {
             EventNotification sdk = EventNotification.builder()
                 .setSecurity(new Security(
-                "string"){{
+                "<value>"){{
                     bearerAuth = "<YOUR_BEARER_TOKEN_HERE>";
                 }})
                 .build();
 
-            de.testcompany.Event_Notification.models.operations.UpdateSubscriptionResponse res = sdk.subscriptions.updateSubscription("string", new de.testcompany.Event_Notification.models.shared.PatchOperationSubscription[]{{
+            de.testcompany.Event_Notification.models.operations.UpdateSubscriptionResponse res = sdk.subscriptions.updateSubscription("<value>", new de.testcompany.Event_Notification.models.shared.PatchOperationSubscription[]{{
                 add(new PatchOperationSubscription(
                 PatchOperation.REPLACE,
                 PatchOperationSubscriptionPath.ROOT_SUBSCRIPTION_NAME){{

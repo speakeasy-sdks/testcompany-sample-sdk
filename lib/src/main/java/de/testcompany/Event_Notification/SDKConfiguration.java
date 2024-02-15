@@ -15,9 +15,9 @@ class SDKConfiguration {
 	public int serverIdx = 0;
 	public String language = "java";
 	public String openapiDocVersion = "1.2.0";
-	public String sdkVersion = "0.4.1";
-	public String genVersion = "2.253.0";
-	public String userAgent = "speakeasy-sdk/java 0.4.1 2.253.0 1.2.0 de.testcompany.Event_Notification";
+	public String sdkVersion = "0.5.0";
+	public String genVersion = "2.258.2";
+	public String userAgent = "speakeasy-sdk/java 0.5.0 2.258.2 1.2.0 de.testcompany.Event_Notification";
 	
 	
 }
