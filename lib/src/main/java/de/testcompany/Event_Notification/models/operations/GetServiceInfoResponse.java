@@ -43,17 +43,6 @@ public class GetServiceInfoResponse {
     }
     
     /**
-     * Service Info is returned
-     */
-    
-    public de.testcompany.Event_Notification.models.shared.ServiceInfo serviceInfo;
-
-    public GetServiceInfoResponse withServiceInfo(de.testcompany.Event_Notification.models.shared.ServiceInfo serviceInfo) {
-        this.serviceInfo = serviceInfo;
-        return this;
-    }
-    
-    /**
      * HTTP response status code for this operation
      */
     
@@ -72,6 +61,17 @@ public class GetServiceInfoResponse {
 
     public GetServiceInfoResponse withRawResponse(HttpResponse<byte[]> rawResponse) {
         this.rawResponse = rawResponse;
+        return this;
+    }
+    
+    /**
+     * Service Info is returned
+     */
+    
+    public de.testcompany.Event_Notification.models.shared.ServiceInfo serviceInfo;
+
+    public GetServiceInfoResponse withServiceInfo(de.testcompany.Event_Notification.models.shared.ServiceInfo serviceInfo) {
+        this.serviceInfo = serviceInfo;
         return this;
     }
     

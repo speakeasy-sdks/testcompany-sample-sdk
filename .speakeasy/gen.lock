@@ -3,18 +3,19 @@ id: 4b568d46-bde2-479b-a164-1fd358a73508
 management:
   docChecksum: 8576067db60375eb36cd1694d1b9e41a
   docVersion: 1.2.0
-  speakeasyVersion: internal
-  generationVersion: 2.258.2
-  releaseVersion: 0.5.0
-  configChecksum: 2ed118632bd7ede802b482494c6b933e
+  speakeasyVersion: 1.204.1
+  generationVersion: 2.279.1
+  releaseVersion: 0.6.0
+  configChecksum: 3e9cb321e32d67572fb8aaf082b3d57a
   repoURL: https://github.com/speakeasy-sdks/testcompany-sample-sdk.git
   repoSubDirectory: .
   published: true
 features:
   java:
-    core: 3.5.1
+    callbacks: 1.0.0
+    core: 3.5.2
     flattening: 2.81.1
-    globalSecurity: 2.81.2
+    globalSecurity: 2.81.4
     globalServerURLs: 2.82.1
     inputOutputModels: 2.83.0
 generatedFiles:

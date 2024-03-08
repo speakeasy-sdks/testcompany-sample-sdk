@@ -64,7 +64,7 @@ publishing {
         maven(MavenPublication) {
             groupId = 'de.testcompany'
             artifactId = 'Event-Notification'
-            version = '0.5.0'
+            version = '0.6.0'
 
             from components.java
 
